@@ -46,16 +46,10 @@ const Sidebar = ({}: SidebarProps) => {
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="relative flex w-full items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
         <Link className="flex items-center" href="/">
-          <Image
-            className="h-6 w-6 rounded-md"
-            width={400}
-            height={400}
-            src={"/images/logo/logo-icon.png"}
-            alt="Logo"
-          />
+          
           {isSidebarOpen && (
             <h1 className=" ml-2 text-xl font-semibold text-white">
-              ShakibAdmin
+              Dashboard
             </h1>
           )}
         </Link>

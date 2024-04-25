@@ -4,14 +4,16 @@ const bodyParser = require('body-parser');
 const app: Express = express();
 const port = process.env.PORT || 5000;
 
-const adminRouter = require('./routes/admin.route');
 const authRouter = require('./routes/auth.route');
+const adminRouter = require('./routes/admin.route');
+const rhRouter = require('./routes/rh.route');
 
 app.use(bodyParser.json());
 
 
-app.use('/admin', adminRouter);
 app.use('/auth', authRouter);
+app.use('/admin', adminRouter);
+app.use('/rh', rhRouter);
 
 
 app.listen(port, () => {

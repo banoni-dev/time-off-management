@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 
 
-const create = async (req: Request, res: Response) => {
+const createUser = async (req: Request, res: Response) => {
   try {
     // encrypt the password
     req.body.password = bcrypt.hashSync(req.body.password, 10);
@@ -19,7 +19,42 @@ const create = async (req: Request, res: Response) => {
   }
 };
 
+const approveRequest = async (req: Request, res: Response) => {
+    const id = req.params.id;
+    try {
+        const request = await prisma.timeOffHistory.update({
+        where: { id },
+        data: { status: "approved" },
+        });
+        res.json(request);
+        // TO-COMPLETE: the missing fields in the request object
+        await prisma.timeOff.create({
+        data: { userId: request.userId, startDate: request.startDate, endDate: request.endDate },
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+    };
+
+const rejectRequest = async (req: Request, res: Response) => {
+    const id = req.params.id;
+    try {
+        const request = await prisma.timeOffHistory.update({
+        where: { id },
+        data: { status: "rejected" },
+        });
+        res.json(request);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+    };
+
+
 
 module.exports = {
-  create,
+    createUser,
+    approveRequest, 
+    rejectRequest
 };

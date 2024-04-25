@@ -1,10 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/admin.controller');
+const { authMiddleware, isAdmin } = require('../middlewares/middlewares');
 
-
-router.post('/login', adminController.login);
-router.post('/logout', adminController.logout);
-router.post('/create', adminController.create);
+router.post('/create', authMiddleware, isAdmin, adminController.create);
 
 module.exports = router;

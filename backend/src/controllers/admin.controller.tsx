@@ -9,7 +9,7 @@ const comparePasswords = (password: string, hashedPassword: string) => {
 
 const createAccessToken = (user: any) => {
   return jwt.sign({ userId: user.id }, process.env.ACCESS_TOKEN_SECRET!, {
-    expiresIn: '15m',
+    expiresIn: '1d',
   });
 };
 
@@ -18,9 +18,13 @@ const createAccessToken = (user: any) => {
 const login = async (req: Request, res: Response) => {
   try {
 
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    const user = await prisma.user.findUnique({ where: { username } });
+    const user = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
 
     if (!user || !comparePasswords(password, user.password)) {
       return res.status(401).json({ message: 'Invalid username or password' });
@@ -50,15 +54,12 @@ const create = async (req: Request, res: Response) => {
 
 const logout = async (req: Request, res: Response) => {
   try {
-    res.status(200).json({ message: "Logout successful" });
+    res.json({ message: "Logged out successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
-}
-
-
-
+};
 
 
 module.exports = {

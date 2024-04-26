@@ -19,13 +19,10 @@ export default function RootLayout({
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
-    console.log("children", children);
   }, []);
   const isSignInPage = window.location.pathname === "/auth/signin";
   const isSignUpPage = window.location.pathname === "/auth/signup";
 
-  console.log("isSignInPage", isSignInPage);
-  console.log("window.location.pathname", window.location.pathname);
   return (
     <html lang="en">
       <body suppressHydrationWarning={true}>

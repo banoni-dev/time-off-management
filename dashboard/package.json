@@ -26,6 +26,7 @@
     "clsx": "^2.0.0",
     "eslint": "8.46.0",
     "eslint-config-next": "latest",
+    "jsonwebtoken": "^9.0.2",
     "jsvectormap": "^1.5.3",
     "lucide-react": "^0.292.0",
     "next": "latest",

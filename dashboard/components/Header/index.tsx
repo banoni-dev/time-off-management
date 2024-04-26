@@ -6,11 +6,28 @@ import DropdownUser from "./DropdownUser";
 import Image from "next/image";
 import { MenuIcon } from "lucide-react";
 import { useSidebar } from "@/components/Sidebar/use-sidebar";
+import { useEffect } from "react";
+import { getUserIdFromToken } from "@/utils/user";
+import axios from "axios";
+import { basicUrl } from "@/utils/backend";
+
+
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
+
+  const userInfo = async(userId: string) => {
+    const response = await axios.get(`${basicUrl}user/profile/${userId}`);
+    console.log("user info", response.data);
+  }
+  useEffect(() => {
+    const token: string = localStorage.getItem("token") || "";
+    const userId: string = getUserIdFromToken(token);
+    userInfo(userId);
+  });
+  
   const { toggleSidebar, isSidebarOpen } = useSidebar((state) => state);
   return (
     <header className="sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">

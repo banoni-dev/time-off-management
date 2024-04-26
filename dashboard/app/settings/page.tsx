@@ -5,7 +5,6 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Settings Page | Next.js E-commerce Dashboard Template",
   description: "This is Settings page for ShakibAdmin Next.js",
-  // other metadata
 };
 
 const Settings = () => {

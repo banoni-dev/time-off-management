@@ -19,8 +19,13 @@ export default function RootLayout({
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
+    console.log("children", children);
   }, []);
+  const isSignInPage = window.location.pathname === "/auth/signin";
+  const isSignUpPage = window.location.pathname === "/auth/signup";
 
+  console.log("isSignInPage", isSignInPage);
+  console.log("window.location.pathname", window.location.pathname);
   return (
     <html lang="en">
       <body suppressHydrationWarning={true}>
@@ -30,16 +35,20 @@ export default function RootLayout({
           ) : (
             <div className="flex h-screen overflow-hidden">
               {/* <!-- ===== Sidebar Start ===== --> */}
-              <Sidebar />
+              {!isSignInPage && !isSignUpPage && (
+                <Sidebar />
+              )}
               {/* <!-- ===== Sidebar End ===== --> */}
 
               {/* <!-- ===== Content Area Start ===== --> */}
               <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
                 {/* <!-- ===== Header Start ===== --> */}
-                <Header
-                  sidebarOpen={sidebarOpen}
-                  setSidebarOpen={setSidebarOpen}
-                />
+                {!isSignInPage && !isSignUpPage && (
+                  <Header
+                    sidebarOpen={sidebarOpen}
+                    setSidebarOpen={setSidebarOpen}
+                  />
+                )}
                 {/* <!-- ===== Header End ===== --> */}
 
                 {/* <!-- ===== Main Content Start ===== --> */}

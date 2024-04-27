@@ -6,7 +6,7 @@ import DropdownUser from "./DropdownUser";
 import Image from "next/image";
 import { MenuIcon } from "lucide-react";
 import { useSidebar } from "@/components/Sidebar/use-sidebar";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getUserIdFromToken } from "@/utils/user";
 import axios from "axios";
 import { basicUrl } from "@/utils/backend";
@@ -17,15 +17,16 @@ const Header = (props: {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
+  const [userInfo, setUserInfo] = useState({});
 
-  const userInfo = async(userId: string) => {
+  const getUserInfo = async(userId: string) => {
     const response = await axios.get(`${basicUrl}user/profile/${userId}`);
-    console.log("user info", response.data);
+    setUserInfo(response.data);
   }
   useEffect(() => {
     const token: string = localStorage.getItem("token") || "";
     const userId: string = getUserIdFromToken(token);
-    userInfo(userId);
+    getUserInfo(userId);
   });
   
   const { toggleSidebar, isSidebarOpen } = useSidebar((state) => state);
@@ -100,7 +101,7 @@ const Header = (props: {
           </ul>
 
           {/* <!-- User Area --> */}
-          <DropdownUser />
+          <DropdownUser user={userInfo} />
           {/* <!-- User Area --> */}
         </div>
       </div>

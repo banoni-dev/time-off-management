@@ -1,10 +1,13 @@
 "use client"
 import { basicUrl } from '@/utils/backend';
 import axios from 'axios';
+import { Delete, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
 
-export default function ListOfEmployees() {
+
+
+export default function DeleteEmployees() {
 
     const [employees, setEmployees] = useState([]);
 
@@ -13,13 +16,18 @@ export default function ListOfEmployees() {
         const response = await axios.get(`${basicUrl}rh/employees`);
         setEmployees(response.data);
       }
-
+    
+    const handleDelete = async (id) => {
+      const response = await axios.delete(`${basicUrl}admin/delete-user/${id}`);
+      console.log(response.data);
+      getEmployees();
+    }
 
 useEffect(()=>{
 
     getEmployees();
 
-},[])
+},[employees])
 
 
 return (
@@ -32,18 +40,19 @@ return (
 
   <table className="border-collapse w-full">
     <thead>
-      <tr className="grid grid-cols-4 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-5 md:px-6 2xl:px-7.5">
+      <tr className="grid grid-cols-6 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-6 md:px-6 2xl:px-7.5">
         <td className="col-span-1 flex items-center font-medium">FirstName</td>
         <td className="col-span-1 hidden items-center sm:flex font-medium">LastName</td>
         <td className="col-span-1 flex items-center font-medium">Username</td>
         <td className="col-span-1 flex items-center font-medium">Email</td>
         <td className="col-span-1 flex items-center font-medium">Time offs available</td>
+        <td className="col-span-1 flex items-center font-medium">Delete</td>
       </tr>
     </thead>
     <tbody>
       {employees.map((employee, key) => (
         <tr
-          className="grid grid-cols-4 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-5 md:px-6 2xl:px-7.5"
+          className="grid grid-cols-6 border-t border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-6 md:px-6 2xl:px-7.5"
           key={key}
         >
           <td className="col-span-1 flex items-center">
@@ -77,7 +86,11 @@ return (
           <td className="col-span-1 flex items-center">
             <p className="text-sm text-black dark:text-white">{employee?.timeOffCredit?.length === 0 ? 0 : "TO-DO"}</p>
           </td>
+          <td className="col-span-1 flex items-center">
+            <p className="text-sm w-100 text-center text-black dark:text-white"><Trash2 onClick={()=>handleDelete(employee?.id)} style={{cursor: "pointer"}} /></p>
+          </td>
         </tr>
+
       ))}
     </tbody>
   </table>

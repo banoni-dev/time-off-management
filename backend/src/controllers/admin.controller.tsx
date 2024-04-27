@@ -4,6 +4,22 @@ const prisma = new PrismaClient();
 
 
 
+
+
+const deleteUser = async (req: Request, res: Response) => {
+    const id = req.params.id;
+    try {
+        const user = await prisma.user.delete({
+        where: { id },
+        });
+        res.json(user);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+    }
+
+
 const createUser = async (req: Request, res: Response) => {
   try {
     // encrypt the password
@@ -51,10 +67,25 @@ const rejectRequest = async (req: Request, res: Response) => {
     }
     };
 
+const getHRs = async (req: Request, res: Response) => {
+    try {
+        const users = await prisma.user.findMany({
+        where: { role: "hr" },
+        });
+        res.json(users);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+    }
+
+
 
 
 module.exports = {
     createUser,
     approveRequest, 
-    rejectRequest
+    rejectRequest,
+    deleteUser,
+    getHRs
 };

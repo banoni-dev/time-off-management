@@ -27,7 +27,7 @@ const Header = (props: {
     const token: string = localStorage.getItem("token") || "";
     const userId: string = getUserIdFromToken(token);
     getUserInfo(userId);
-  });
+  },[]);
   
   const { toggleSidebar, isSidebarOpen } = useSidebar((state) => state);
   return (

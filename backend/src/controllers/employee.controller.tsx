@@ -9,7 +9,11 @@ const prisma = new PrismaClient();
 
 const getApprovedRequests = async (req: Request, res: Response) => {
   try {
-    const requests = await prisma.timeOff.findMany();
+    const requests = await prisma.timeOff.findMany(
+      {
+        where: { userId: req.params.id },
+      }
+    );
     res.json(requests);
   } catch (error) {
     console.error(error);
@@ -19,7 +23,11 @@ const getApprovedRequests = async (req: Request, res: Response) => {
 
 const getRequests = async (req: Request, res: Response) => {
   try {
-    const requests = await prisma.timeOffHistory.findMany();
+    const requests = await prisma.timeOffHistory.findMany(
+      {
+        where: { userId: req.params.id },
+      }
+    );
     res.json(requests);
   } catch (error) {
     console.error(error);
@@ -32,6 +40,11 @@ const createRequest = async (req: Request, res: Response) => {
     try {
         const request = await prisma.timeOffHistory.create({
         data: req.body,
+        });
+        // add that that request to the timeOffHistory field in the user table
+        await prisma.user.update({
+        where: { id: req.body.userId },
+        data: { timeOffHistory: { connect: { id: request.id } } },
         });
         res.json(request);
     } catch (error) {

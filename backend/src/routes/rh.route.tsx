@@ -9,6 +9,6 @@ router.get('/all-requests', rhController.getAllRequests);
 router.get('/all-requests/:id', rhController.getAllRequestsForEmployee);
 router.get('/approved-requests', rhController.getApprovedRequests);
 router.get('/approved-requests/:id', rhController.getApprovedRequestsForEmployee);
-
+router.put('/update-credits/:id', rhController.updateCredits);
 
 module.exports = router;

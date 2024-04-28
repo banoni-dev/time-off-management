@@ -23,7 +23,9 @@ model User {
   role           String
   timeOffs       timeOff[]
   timeOffHistory timeOffHistory[]
-  timeOffCredit  timeOffCredit[]
+  timeOffCredit  Int           @default(0)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt @default(now())
 }
 
 model timeOff {
@@ -34,21 +36,28 @@ model timeOff {
   status    String
   reason    String
   user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
 }
 
 model timeOffHistory {
   id        String   @id @default(cuid())
   userId    String
   startDate DateTime
+  type      String
   endDate   DateTime
   status    String
   reason    String
   user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
 }
 
-model timeOffCredit {
-  id     String @id @default(cuid())
-  userId String
-  credit Int
-  user   User   @relation(fields: [userId], references: [id])
-}
+// model timeOffCredit {
+//   id     String @id @default(cuid())
+//   userId String
+//   credit Int
+//   user   User   @relation(fields: [userId], references: [id])
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt @default(now())
+// }

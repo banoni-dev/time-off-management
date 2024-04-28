@@ -24,6 +24,8 @@ const createUser = async (req: Request, res: Response) => {
   try {
     // encrypt the password
     req.body.password = bcrypt.hashSync(req.body.password, 10);
+    // initilaize the timeOffCredit field with 0
+    req.body.timeOffCredit = 0;
     const user = await prisma.user.create({
         data: req.body,
         });

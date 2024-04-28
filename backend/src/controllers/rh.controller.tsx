@@ -51,7 +51,17 @@ const getApprovedRequestsForEmployee = async (req: Request, res: Response) => {
 
 const getAllRequests = async (req: Request, res: Response) => {
   try {
-    const requests = await prisma.timeOffHistory.findMany();
+    const requests = await prisma.timeOffHistory.findMany({
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+    }
+    );
     res.json(requests);
   } catch (error) {
     console.error(error);
@@ -70,6 +80,22 @@ const getAllRequestsForEmployee = async (req: Request, res: Response) => {
   }
 };
 
+const updateCredits = async (req: Request, res: Response) => {
+  console.log(req.body.timeOffCredit);
+  const id = req.params.id;
+  try {
+    const employee = await prisma.user.update({
+      where: { id },
+      data: { timeOffCredit: req.body.timeOffCredit },
+    });
+    res.json(employee);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+}
+
+
 
 module.exports = {
     getEmployees,
@@ -77,5 +103,6 @@ module.exports = {
     getApprovedRequests,
     getApprovedRequestsForEmployee,
     getAllRequests,
-    getAllRequestsForEmployee
+    getAllRequestsForEmployee,
+    updateCredits
     };

@@ -14,3 +14,7 @@ export const getUserIdFromToken = (accessToken: string) => {
     }
   }
   
+export const formatDateToISO = (date: string) => {
+    const dateObject = new Date(date);
+    return dateObject.toISOString();
+}

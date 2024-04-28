@@ -29,6 +29,8 @@ import {
   UserCog,
   UserCircle,
   LogOut,
+  PlusCircle,
+  History,
 } from "lucide-react";
 import { useSidebar } from "./use-sidebar";
 import { cn } from "@/app/libs/utlis";
@@ -85,23 +87,25 @@ const Sidebar = ({}: SidebarProps) => {
                     href="/"
                   />
               </li>
-              {/* <!-- Menu Item Dashboard --> */}
 
-              {/* <!-- Menu Item Calendar --> */}
-             
+              {/* <!-- Employee --> */}
 
-              {/* <!-- Menu Item Tables --> */}
+              <li>
+                <LinkItem
+                  title="Add a Time off"
+                  href="/timeoff/add"
+                  icon={<PlusCircle className="h-6 w-6" />}
+                />
+              </li>
+              <li>
+                <LinkItem
+                  title="Hisotory"
+                  href="/timeoff/history"
+                  icon={<History className="h-6 w-6" />}
+                />
+              </li>
 
-              {/* <!-- Menu Item Settings --> */}
-
-
-              {/* <!-- Menu Item Chart --> */}
-              
-              {/* <!-- Menu Item Chart --> */}
-
-              {/* <!-- Menu Item Ui Elements --> */}
-
-              {/* <!-- Dropdown Menu Start --> */}
+              {/* <!-- Admin --> */}
               <li>
                 <ExpandMenu icon={<UserCircle className="h-6 w-6" />} name="Employees">
                   <LinkItem

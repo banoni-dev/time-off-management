@@ -84,7 +84,7 @@ return (
             <p className="text-sm text-black dark:text-white">{employee?.email}</p>
           </td>
           <td className="col-span-1 flex items-center">
-            <p className="text-sm text-black dark:text-white">{employee?.timeOffCredit?.length === 0 ? 0 : "TO-DO"}</p>
+            <p className="text-sm text-black dark:text-white">{employee?.timeOffCredit}</p>
           </td>
           <td className="col-span-1 flex items-center">
             <p className="text-sm w-100 text-center text-black dark:text-white"><Trash2 onClick={()=>handleDelete(employee?.id)} style={{cursor: "pointer"}} /></p>

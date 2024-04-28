@@ -29,7 +29,8 @@ export const AddEmployee: React.FC = () => {
             email,
             password,
             username,
-            role: "employee"
+            role: "employee",
+            
         });
         console.log(response.data);
     }

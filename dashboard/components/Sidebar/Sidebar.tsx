@@ -31,6 +31,9 @@ import {
   LogOut,
   PlusCircle,
   History,
+  Clock,
+  LayoutList,
+  Pen,
 } from "lucide-react";
 import { useSidebar } from "./use-sidebar";
 import { cn } from "@/app/libs/utlis";
@@ -88,6 +91,18 @@ const Sidebar = ({}: SidebarProps) => {
                   />
               </li>
 
+              {/* <!-- HR --> */}
+
+              <li>
+                <LinkItem
+                  title="List of Employees"
+                  href="/employees/list"
+                  icon={<Users className="h-6 w-6" />}
+                />
+              </li>
+
+
+
               {/* <!-- Employee --> */}
 
               <li>
@@ -97,11 +112,30 @@ const Sidebar = ({}: SidebarProps) => {
                   icon={<PlusCircle className="h-6 w-6" />}
                 />
               </li>
+
+              <li>
+                <LinkItem
+                  title="My Time Offs"
+                  href="/timeoff/my"
+                  icon={<Clock className="h-6 w-6" />}
+                />
+              </li>
+
+
+
               <li>
                 <LinkItem
                   title="Hisotory"
                   href="/timeoff/history"
                   icon={<History className="h-6 w-6" />}
+                />
+              </li>
+
+              <li>
+                <LinkItem
+                  title="Edit credits"
+                  href="/credits/edit"
+                  icon={<Pen className="h-6 w-6" />}
                 />
               </li>
 
@@ -143,6 +177,13 @@ const Sidebar = ({}: SidebarProps) => {
                     icon={<UserMinus  className="h-5 w-5" />}
                   />
                 </ExpandMenu>
+              </li>
+              <li>
+                <LinkItem 
+                  title="Time offs"
+                  href="/timeoff/edit"
+                  icon={<LayoutList className="h-6 w-6" />}
+                />
               </li>
               
               <li>

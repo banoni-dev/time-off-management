@@ -1,9 +1,12 @@
 const jwt = require('jsonwebtoken');
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const bcrypt = require('bcryptjs');
 
 const comparePasswords = (password: string, hashedPassword: string) => {
-  return password === hashedPassword;
+  // hash the password and compare it to the hashed password in the database
+  const hashed = bcrypt.compareSync(password, hashedPassword);
+  return hashed;
 }
 
 const createAccessToken = (user: any) => {
@@ -15,6 +18,7 @@ const createAccessToken = (user: any) => {
 
 
 const login = async (req: Request, res: Response) => {
+  console.log(req.body);
   try {
 
     const { email, password } = req.body;

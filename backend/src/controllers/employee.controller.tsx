@@ -37,11 +37,11 @@ const getRequests = async (req: Request, res: Response) => {
 
 
 const createRequest = async (req: Request, res: Response) => {
+  console.log(req.body);
     try {
         const request = await prisma.timeOffHistory.create({
         data: req.body,
         });
-        // add that that request to the timeOffHistory field in the user table
         await prisma.user.update({
         where: { id: req.body.userId },
         data: { timeOffHistory: { connect: { id: request.id } } },

@@ -24,7 +24,9 @@ const getProfile = async (req: Request, res: Response) => {
         const user = await prisma.user.findUnique({
         where: { id },
         });
-        // res.send the user except the password
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
         res.json({ id: user.id, email: user.email, username: user.username, role: user.role, firstName: user.firstName, lastName: user.lastName });
     } catch (error) {
         console.error(error);

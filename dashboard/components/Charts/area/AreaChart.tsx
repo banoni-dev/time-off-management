@@ -1,53 +1,52 @@
+import { useEffect, useState } from 'react';
 import { AreaChart, Card, Title } from "@tremor/react";
+import axios from 'axios';
+import { basicUrl } from '@/utils/backend';
+import { getUserIdFromToken } from '@/utils/user';
 
-const chartdata = [
-  {
-    date: "Jan 22",
-    SemiAnalysis: 2890,
-    "The Pragmatic Engineer": 2338,
-  },
-  {
-    date: "Feb 22",
-    SemiAnalysis: 2756,
-    "The Pragmatic Engineer": 2103,
-  },
-  {
-    date: "Mar 22",
-    SemiAnalysis: 3322,
-    "The Pragmatic Engineer": 2194,
-  },
-  {
-    date: "Apr 22",
-    SemiAnalysis: 3470,
-    "The Pragmatic Engineer": 2108,
-  },
-  {
-    date: "May 22",
-    SemiAnalysis: 3475,
-    "The Pragmatic Engineer": 1812,
-  },
-  {
-    date: "Jun 22",
-    SemiAnalysis: 3129,
-    "The Pragmatic Engineer": 1726,
-  },
-];
-
-const valueFormatter = function (number: number) {
+const valueFormatter = function (number) {
   return "$ " + new Intl.NumberFormat("us").format(number).toString();
 };
 
-const Area = () => (
-  <Card>
-    <Title>Newsletter revenue over time (USD)</Title>
-    <AreaChart
-      className="mt-4 h-72"
-      data={chartdata}
-      index="date"
-      categories={["SemiAnalysis", "The Pragmatic Engineer"]}
-      colors={["indigo", "cyan"]}
-      valueFormatter={valueFormatter}
-    />
-  </Card>
-);
+const Area = () => {
+  const [chartData, setChartData] = useState([]);
+
+  useEffect(() => {
+    // Fetch chart data from backend API
+    const token = localStorage.getItem('token') || '';
+    const id = getUserIdFromToken(token);
+    fetchChartDataFromBackend(id);
+    console.log('chartData:', chartData);
+
+  }, []);
+
+  const fetchChartDataFromBackend = async (id) => {
+    try {
+      // Fetch data from backend API
+      const response = await axios.get(`${basicUrl}user/stats/${id}`);
+      setChartData(response.data.chartdata.reverse());
+      console.log('response.data:', response.data.chartdata.revrese());
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching chart data:', error);
+      return [];
+    }
+
+  };
+
+  return (
+    <Card>
+      <Title>Newsletter revenue over time (USD)</Title>
+      <AreaChart
+        className="mt-4 h-72"
+        data={chartData}
+        index="date"
+        categories={["All the Timeoffs", "Approved Timeoffs"]}
+        colors={["indigo", "cyan"]}
+        valueFormatter={valueFormatter}
+      />
+    </Card>
+  );
+};
+
 export default Area;

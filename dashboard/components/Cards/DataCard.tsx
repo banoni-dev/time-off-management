@@ -20,16 +20,10 @@ const DataCard = (props: Props) => {
       <Card className="mx-auto max-w-lg">
         <Flex alignItems="start">
           <div>
-            <Text>{name}</Text>
-            <Metric>$ {amount}</Metric>
+            <Text className="text-[18px]">{name}</Text>
+            <Metric className="mt-3">{amount}</Metric>
           </div>
-          <BadgeDelta deltaType="moderateIncrease">13.2%</BadgeDelta>
         </Flex>
-        <Flex className="mt-4">
-          <Text className="truncate">68% ($ 149,940)</Text>
-          <Text>$ 220,500</Text>
-        </Flex>
-        <ProgressBar value={15.9} className="mt-2" />
       </Card>
     </div>
   );

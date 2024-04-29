@@ -109,7 +109,7 @@ const Sidebar = ({}: SidebarProps) => {
 
               {/* <!-- HR --> */}
 
-              {(role === "hr" || role === "admin")&& (
+              {(role === "hr")&& (
                 <li>
                 <LinkItem
                   title="List of Employees"

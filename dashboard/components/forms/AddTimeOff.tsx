@@ -32,6 +32,7 @@ export const AddTimeOff: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log(startDate, endDate, type, reason, id);
         const response = await axios.post(`${basicUrl}employee/request`, {
             startDate: formatDateToISO(startDate),
             endDate: formatDateToISO(endDate),

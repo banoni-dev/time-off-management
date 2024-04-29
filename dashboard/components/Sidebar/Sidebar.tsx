@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
@@ -40,12 +40,28 @@ import { cn } from "@/app/libs/utlis";
 import MenuItem from "./MenuItem";
 import LinkItem from "./LinkItem";
 import ExpandMenu from "./ExpandMenu";
+import { basicUrl } from "@/utils/backend";
+import axios from "axios";
+import { getUserIdFromToken } from "@/utils/user";
 
 interface SidebarProps {}
 
 const Sidebar = ({}: SidebarProps) => {
   const pathname = usePathname();
   const { isSidebarOpen, toggleSidebar } = useSidebar((state) => state);
+  const [role, setRole] = useState<string>("");
+
+
+  const getUserInfo = async(userId: string) => {
+    const response = await axios.get(`${basicUrl}user/profile/${userId}`);
+    setRole(response.data.role);
+  }
+  useEffect(() => {
+    const token: string = localStorage.getItem("token") || "";
+    const userId: string = getUserIdFromToken(token);
+    getUserInfo(userId);
+  },[]);
+  
 
   return (
     <aside
@@ -93,18 +109,22 @@ const Sidebar = ({}: SidebarProps) => {
 
               {/* <!-- HR --> */}
 
-              <li>
+              {(role === "hr" || role === "admin")&& (
+                <li>
                 <LinkItem
                   title="List of Employees"
                   href="/employees/list"
                   icon={<Users className="h-6 w-6" />}
                 />
               </li>
+              )}
 
 
 
               {/* <!-- Employee --> */}
 
+                {role === "employee" && (
+                  <>
               <li>
                 <LinkItem
                   title="Add a Time off"
@@ -123,14 +143,18 @@ const Sidebar = ({}: SidebarProps) => {
 
 
 
+
               <li>
                 <LinkItem
-                  title="Hisotory"
+                  title="my Hisotory"
                   href="/timeoff/history"
                   icon={<History className="h-6 w-6" />}
                 />
               </li>
+              </>
+              )}
 
+              {role === "hr" && (
               <li>
                 <LinkItem
                   title="Edit credits"
@@ -138,8 +162,11 @@ const Sidebar = ({}: SidebarProps) => {
                   icon={<Pen className="h-6 w-6" />}
                 />
               </li>
+              )}
 
               {/* <!-- Admin --> */}
+              {role === "admin" && (
+                <>
               <li>
                 <ExpandMenu icon={<UserCircle className="h-6 w-6" />} name="Employees">
                   <LinkItem
@@ -185,7 +212,11 @@ const Sidebar = ({}: SidebarProps) => {
                   icon={<LayoutList className="h-6 w-6" />}
                 />
               </li>
-              
+              </>
+              )}
+              {/* <!-- Menu Item Pages --> */}
+
+
               <li>
                 <LinkItem
                   title="Settings"
@@ -194,7 +225,6 @@ const Sidebar = ({}: SidebarProps) => {
                 ></LinkItem>
               </li>
 
-              {/* <!-- Menu Item Settings --> */}
               <li>
                 <LinkItem
                   title="Profile"
@@ -206,7 +236,7 @@ const Sidebar = ({}: SidebarProps) => {
               <li>
                 <LinkItem
                   title="Logout"
-                  href="/logout"
+                  href="/auth/logout"
                   icon={<LogOut className="h-6 w-6" />}
                 ></LinkItem>
               </li>

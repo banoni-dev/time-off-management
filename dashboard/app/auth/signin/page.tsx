@@ -21,6 +21,7 @@ const SignIn: React.FC = () => {
   // Function to handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(email, password);
     try {
       // Make a POST request to your login API endpoint
       const response = await axios.post(`${basicUrl}auth/login`, { email, password });

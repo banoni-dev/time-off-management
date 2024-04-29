@@ -22,6 +22,7 @@ export default function RootLayout({
   }, []);
   const isSignInPage = window.location.pathname === "/auth/signin";
   const isSignUpPage = window.location.pathname === "/auth/signup";
+  const token = localStorage.getItem("token");
 
   return (
     <html lang="en">

@@ -41,19 +41,40 @@ const approveRequest = async (req: Request, res: Response) => {
     const id = req.params.id;
     try {
         const request = await prisma.timeOffHistory.update({
-        where: { id },
-        data: { status: "approved" },
+            where: { id },
+            data: { status: "approved" },
         });
+
+        // Check if the request exists
+        if (!request) {
+            return res.status(404).json({ message: 'Time off request not found' });
+        }
+
         res.json(request);
+        
         // TO-COMPLETE: the missing fields in the request object
-        await prisma.timeOff.create({
-        data: { userId: request.userId, startDate: request.startDate, endDate: request.endDate },
+        const request2 = await prisma.timeOff.create({
+            data: {
+                startDate: request.startDate,
+                endDate: request.endDate,
+                status: request.status,
+                userId: request.userId,
+                reason: request.reason,
+            },
         });
+
+        const res2 = await prisma.user.update({
+            where: { id: request.userId },
+            data: { timeOffs: { connect: { id: request2.id } } },
+        });
+
+
+        console.log("TimeOff created successfully", res2);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Internal server error" });
     }
-    };
+};
 
 const rejectRequest = async (req: Request, res: Response) => {
     const id = req.params.id;

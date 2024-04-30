@@ -67,7 +67,7 @@ const DropdownNotification = () => {
         </svg>
       </Link>
 
-      <div
+      {/* <div
         ref={dropdown}
         onFocus={() => setDropdownOpen(true)}
         onBlur={() => setDropdownOpen(false)}
@@ -144,7 +144,7 @@ const DropdownNotification = () => {
             </Link>
           </li>
         </ul>
-      </div>
+      </div> */}
     </li>
   );
 };

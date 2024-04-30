@@ -1,14 +1,33 @@
+"use client"
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import Image from "next/image";
 
 import { Metadata } from "next";
-export const metadata: Metadata = {
-  title: "Profile Page | Next.js E-commerce Dashboard Template",
-  description: "This is Profile page for TailAdmin Next.js",
-  // other metadata
-};
+import { useEffect, useState } from "react";
+import { getUserIdFromToken } from "@/utils/user";
+import axios from "axios";
+import { basicUrl } from "@/utils/backend";
+
+
+
+
+
 
 const Profile = () => {
+
+
+  const [userInfo, setUserInfo] = useState({});
+
+  const getUserInfo = async(userId: string) => {
+    const response = await axios.get(`${basicUrl}user/profile/${userId}`);
+    setUserInfo(response.data);
+  }
+  useEffect(() => {
+    const token: string = localStorage.getItem("token") || "";
+    const userId: string = getUserIdFromToken(token);
+    getUserInfo(userId);
+  },[]);
+
   return (
     <>
       <Breadcrumb pageName="Profile" />
@@ -60,7 +79,7 @@ const Profile = () => {
             <div className="relative drop-shadow-2">
               <Image
                 className="rounded-full"
-                src={"/images/sadmanshakib.jpg"}
+                src={"/images/user.jpg"}
                 width={160}
                 height={160}
                 alt="profile"
@@ -101,9 +120,9 @@ const Profile = () => {
           </div>
           <div className="mt-4">
             <h3 className="mb-1.5 text-2xl font-semibold text-black dark:text-white">
-              don't forgot to do this
+              {userInfo?.firstName + " " + userInfo?.lastName}
             </h3>
-            <p className="font-medium">admin</p>
+            <p className="font-medium">{userInfo?.role}</p>
 
 
 

@@ -82,7 +82,7 @@ const DropdownMessage = () => {
       </Link>
 
       {/* <!-- Dropdown Start --> */}
-      <div
+      {/* <div
         ref={dropdown}
         onFocus={() => setDropdownOpen(true)}
         onBlur={() => setDropdownOpen(false)}
@@ -211,7 +211,7 @@ const DropdownMessage = () => {
             </Link>
           </li>
         </ul>
-      </div>
+      </div> */}
       {/* <!-- Dropdown End --> */}
     </li>
   );

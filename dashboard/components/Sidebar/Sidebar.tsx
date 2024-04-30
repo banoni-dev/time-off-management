@@ -34,6 +34,7 @@ import {
   Clock,
   LayoutList,
   Pen,
+  List,
 } from "lucide-react";
 import { useSidebar } from "./use-sidebar";
 import { cn } from "@/app/libs/utlis";
@@ -110,6 +111,7 @@ const Sidebar = ({}: SidebarProps) => {
               {/* <!-- HR --> */}
 
               {(role === "hr")&& (
+                <>
                 <li>
                 <LinkItem
                   title="List of Employees"
@@ -117,6 +119,21 @@ const Sidebar = ({}: SidebarProps) => {
                   icon={<Users className="h-6 w-6" />}
                 />
               </li>
+              <li>
+                <LinkItem
+                  title="List Of Time Offs"
+                  href="/timeoff/all"
+                  icon={<List className="h-6 w-6" />}
+                />
+              </li>
+              <li>
+                <LinkItem
+                  title="List of History"
+                  href="/timeoff/allhistory"
+                  icon={<History className="h-6 w-6" />}
+                />
+              </li>
+              </>
               )}
 
 

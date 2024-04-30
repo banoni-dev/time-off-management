@@ -27,6 +27,23 @@ const ECommerce: React.FC = () => {
   const [timeOffs, setTimeOffs] = useState(0);
   const [timeOffCredit, setTimeOffCredit] = useState(0);
   const [timeOffHistory, setTimeOffHistory] = useState(0);
+  const [allTimeOffs, setAllTimeOffs] = useState(0);
+  const [allTimeOffsHistory, setAllTimeOffsHistory] = useState(0);
+  const [allEmployees, setAllEmployees] = useState(0);
+  const [allHr, setAllHr] = useState(0);
+
+
+
+  const getInfo = async() => {
+    const response = await axios.get(`${basicUrl}admin/Hrs`);
+    setAllHr(response.data.length);
+    const response2 = await axios.get(`${basicUrl}rh/employees`);
+    setAllEmployees(response2.data.length);
+    const response3 = await axios.get(`${basicUrl}rh/all-requests`);
+    setAllTimeOffsHistory(response3.data.length);
+    const response4 = await axios.get(`${basicUrl}rh/approved-requests`);
+    setAllTimeOffs(response4.data.length);
+  }
 
 
   const getUserInfo = async(userId: string) => {
@@ -41,6 +58,7 @@ const ECommerce: React.FC = () => {
     const token: string = localStorage.getItem("token") || "";
     const userId: string = getUserIdFromToken(token);
     getUserInfo(userId);
+    getInfo();
   },[]);
   
 
@@ -53,11 +71,36 @@ const ECommerce: React.FC = () => {
         <DataCard name="Total History" amount={timeOffHistory} />
       </div>
       <div className="space-y-5 py-5">
-        <AreaChart />
-        <SimpleBar />
+        <AreaChart role={userInfo?.role} />
+        <SimpleBar role={userInfo?.role} />
       </div>
 
     </>
+    )}
+    {userInfo.role === "admin" && (
+      <>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5">
+          <DataCard name="Total Employees" amount={allEmployees} />
+          <DataCard name="Total HRs" amount={allHr} />
+        <DataCard name="approved Timeoffs" amount={timeOffs} />
+        </div>
+        <div className="space-y-5 py-5">
+        <AreaChart role={userInfo?.role} />
+      </div>
+      </>
+    )}
+    {userInfo.role === "hr" && (
+      <>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5">
+          <DataCard name="Total Employees" amount={allEmployees} />
+          <DataCard name="approved Timeoffs" amount={allTimeOffs} />
+          <DataCard name="Total History" amount={allTimeOffsHistory} />
+        </div>
+        <div className="space-y-5 py-5">
+        <AreaChart role={userInfo?.role} />
+      </div>
+
+      </>
     )}
     </>
   );

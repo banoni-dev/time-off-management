@@ -81,9 +81,66 @@ const getStats = async (req: Request, res: Response) => {
 
 
 
+const getAllStats = async (req: Request, res: Response) => {
+    try {
+        // Retrieve all users
+        const users = await prisma.user.findMany({
+            include: {
+                timeOffs: true,
+                timeOffHistory: true,
+            },
+        });
+
+        if (!users || users.length === 0) {
+            return res.status(404).json({ message: 'No users found' });
+        }
+
+        // Initialize chartdata object
+        const chartdata = {};
+
+        // Process timeOffs and timeOffHistory data for all users
+        users.forEach(user => {
+            user.timeOffs.forEach(timeOff => {
+                const dateKey = timeOff.startDate.toLocaleString('en-US', { month: 'short', year: 'numeric' });
+                if (!chartdata[dateKey]) {
+                    chartdata[dateKey] = {
+                        "All the Timeoffs": 0,
+                        "Approved Timeoffs": 0,
+                    };
+                }
+                chartdata[dateKey]["All the Timeoffs"] += 1;
+                if (timeOff.status === 'approved') {
+                    chartdata[dateKey]["Approved Timeoffs"] += 1;
+                }
+            });
+
+            user.timeOffHistory.forEach(timeOff => {
+                const dateKey = timeOff.startDate.toLocaleString('en-US', { month: 'short', year: 'numeric' });
+                if (!chartdata[dateKey]) {
+                    chartdata[dateKey] = {
+                        "All the Timeoffs": 0,
+                        "Approved Timeoffs": 0,
+                    };
+                }
+                chartdata[dateKey]["All the Timeoffs"] += 1;
+                if (timeOff.status === 'approved') {
+                    chartdata[dateKey]["Approved Timeoffs"] += 1;
+                }
+            });
+        });
+
+        res.json({ chartdata });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
+
 
 module.exports = {
     updateProfile,
     getProfile,
-    getStats
+    getStats,
+    getAllStats
 };
